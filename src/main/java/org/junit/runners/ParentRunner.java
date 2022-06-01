@@ -403,6 +403,15 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
         return description;
     }
 
+               /**
+               ParentRunner 实现了借口Runner中的run方法， 这个run方法中 首先执行classBlock 就是说以当前RunWith注解所在的类为一个块
+               将这个块 进行分解。 classBlock方法会通过childrenInvoker(notifier) 方法来分解。
+               分解有两种处理方式 （1）如果你当前的Runner是BlockJunit4ClassRunner，比如SpringRunner就是一个BlockJUnit4ClassRunnner，那么RunWith注解所在类的每一个#@Test方法
+               就是一个执行点。 （2）如果RunWith注解使用了Suit类作为Runner：@RunWith(Suite.class)，那么@Suite.SuiteClasses 指定的多个class  会将多个测试类进行整合集成
+               
+               run方法-> classBlock得到statement-->statement.evaluate();--》ParentRunner的childrenInvoker--〉parentRunner的runChild
+               对于runChild BlockJUnit4ClassRunner和Suite这两个Runner会有不同的实现。前者以的child是@Test方法，后者的child是一个个的SuiteClasses
+               */
     @Override
     public void run(final RunNotifier notifier) {
         EachTestNotifier testNotifier = new EachTestNotifier(notifier,
