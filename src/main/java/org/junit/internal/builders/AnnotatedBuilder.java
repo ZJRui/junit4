@@ -79,10 +79,45 @@ public class AnnotatedBuilder extends RunnerBuilder {
 
     @Override
     public Runner runnerForClass(Class<?> testClass) throws Exception {
+        /**
+         *
+         * buildTestContext:103, SpringBootTestContextBootstrapper (org.springframework.boot.test.context)
+         * <init>:137, TestContextManager (org.springframework.test.context)
+         * <init>:122, TestContextManager (org.springframework.test.context)
+         * createTestContextManager:151, SpringJUnit4ClassRunner (org.springframework.test.context.junit4)
+         * <init>:142, SpringJUnit4ClassRunner (org.springframework.test.context.junit4)
+         * <init>:49, SpringRunner (org.springframework.test.context.junit4)
+         * newInstance0:-1, NativeConstructorAccessorImpl (sun.reflect)
+         * newInstance:62, NativeConstructorAccessorImpl (sun.reflect)
+         * newInstance:45, DelegatingConstructorAccessorImpl (sun.reflect)
+         * newInstance:423, Constructor (java.lang.reflect)
+         *
+         *
+         * buildRunner:104, AnnotatedBuilder (org.junit.internal.builders)
+         * runnerForClass:86, AnnotatedBuilder (org.junit.internal.builders)  ---->?????? AnnotatedBuilder?runnerForClass?
+         * safeRunnerForClass:70, RunnerBuilder (org.junit.runners.model)
+         * runnerForClass:37, AllDefaultPossibilitiesBuilder (org.junit.internal.builders)
+         * safeRunnerForClass:70, RunnerBuilder (org.junit.runners.model)
+         * createRunner:28, ClassRequest (org.junit.internal.requests)
+         * getRunner:19, MemoizingRequest (org.junit.internal.requests)
+         * getRunner:36, FilterRequest (org.junit.internal.requests)
+         * startRunnerWithArgs:50, JUnit4IdeaTestRunner (com.intellij.junit4)
+         * execute:38, IdeaTestRunner$Repeater$1 (com.intellij.rt.junit)
+         * repeat:11, TestsRepeater (com.intellij.rt.execution.junit)
+         * startRunnerWithArgs:35, IdeaTestRunner$Repeater (com.intellij.rt.junit)
+         * prepareStreamsAndStart:235, JUnitStarter (com.intellij.rt.junit)
+         * main:54, JUnitStarter (com.intellij.rt.junit)
+         *
+         *
+         * runnerForClass?????TestClass??RunWith?????RunWith?????Runner
+         *
+         *
+         */
         for (Class<?> currentTestClass = testClass; currentTestClass != null;
              currentTestClass = getEnclosingClassForNonStaticMemberClass(currentTestClass)) {
             RunWith annotation = currentTestClass.getAnnotation(RunWith.class);
             if (annotation != null) {
+                //?????????Runner??
                 return buildRunner(annotation.value(), testClass);
             }
         }

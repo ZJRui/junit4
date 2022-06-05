@@ -17,7 +17,7 @@ import org.junit.runners.model.TestClass;
  */
 public final class JUnit4 extends BlockJUnit4ClassRunner {
     /**
-     * Constructs a new instance of the default runner
+     * Constructs a ne·w instance of the default runner
      */
     public JUnit4(Class<?> klass) throws InitializationError {
         super(new TestClass(klass));
